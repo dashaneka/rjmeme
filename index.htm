@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>meme generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=inter:wght@400;500;600;700&family=anton&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'inter', sans-serif;
+        }
+        /* custom scrollbar for a better look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d3748;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #718096;
+        }
+        /* styling for the range slider */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #db2777;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #db2777;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        /* custom file input button */
+        .file-input-button {
+            cursor: pointer;
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        #app-wrapper.dragover {
+            transform: scale(0.995);
+            box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.7);
+            border-radius: 1.5rem; /* corresponds to rounded-2xl on main divs */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-pink-800 text-white antialiased">
+    <div id="app-wrapper" class="transition-all duration-300 p-1">
+        <div class="container mx-auto px-4 py-8">
+            
+            <!-- header -->
+            <header class="text-center mb-10">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-400">
+                    meme maestro
+                </h1>
+                <p class="text-gray-400 mt-2">craft the next viral meme with ease.</p>
+            </header>
+
+            <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- controls panel -->
+                <div class="lg:col-span-1 bg-black/30 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl space-y-6 h-fit lg:sticky top-8">
+                    
+                    <!-- image upload -->
+                    <div>
+                        <h2 class="text-xl font-semibold mb-3 text-pink-300">1. choose your image</h2>
+                        <label for="image-upload" class="file-input-button w-full flex items-center justify-center gap-2 bg-pink-600 hover:bg-pink-700 transition-all duration-300 text-white font-semibold py-3 px-4 rounded-lg shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                            <span>upload image</span>
+                        </label>
+                        <input type="file" id="image-upload" class="hidden" accept="image/*">
+                        <p class="text-xs text-gray-500 mt-2 text-center">or drop a file anywhere</p>
+                    </div>
+                    
+                    <!-- separator -->
+                    <hr class="border-gray-700">
+
+                    <!-- text inputs -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-xl font-semibold text-pink-300">2. add your text</h2>
+                            <button id="ai-suggest-btn" disabled class="disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md transition-all">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magic" viewBox="0 0 16 16"><path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0v1.829Zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707L14 2.707a.5.5 0 0 0 0-.707ZM7.293 4L8 3.293a.5.5 0 1 0-.707-.707L6.586 2a.5.5 0 0 0 0 .707l.707.707ZM5 2.672a.5.5 0 1 0-1 0V.843a.5.5 0 0 0 1 0v1.829Z M1.5 13.293l.707.707a.5.5 0 0 0 .707 0L4 12.707a.5.5 0 0 0 0-.707L2.707 10.5a.5.5 0 0 0-.707 0l-.707.707a.5.5 0 0 0 0 .707Zm10.5 0a.5.5 0 0 0 0 .707l.707.707a.5.5 0 0 0 .707 0l.707-.707a.5.5 0 0 0 0-.707l-.707-.707a.5.5 0 0 0-.707 0L12 12.707a.5.5 0 0 0 0 .707ZM8.5 4.5a.5.5 0 0 0-1 0v1.536a.5.5 0 0 0 1 0V4.5ZM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Z"/></svg>
+                                suggest with ai
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <textarea id="top-text" placeholder="top text" rows="2" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition resize-none"></textarea>
+                            <textarea id="bottom-text" placeholder="bottom text" rows="2" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- separator -->
+                    <hr class="border-gray-700">
+
+                    <!-- styling controls -->
+                    <div>
+                        <h2 class="text-xl font-semibold mb-3 text-pink-300">3. style it up</h2>
+                        <div class="space-y-4">
+                            <!-- font size -->
+                            <div>
+                                <label for="top-font-size" class="block text-sm font-medium text-gray-400 mb-1">top text size: <span id="top-font-size-value">50</span>px</label>
+                                <input type="range" id="top-font-size" min="10" max="100" value="50" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                             <div>
+                                <label for="bottom-font-size" class="block text-sm font-medium text-gray-400 mb-1">bottom text size: <span id="bottom-font-size-value">50</span>px</label>
+                                <input type="range" id="bottom-font-size" min="10" max="100" value="50" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div>
+                                <label for="line-spacing" class="block text-sm font-medium text-gray-400 mb-1">line spacing: <span id="line-spacing-value">1.2</span></label>
+                                <input type="range" id="line-spacing" min="0.8" max="2.5" value="1.2" step="0.1" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                             <!-- font family -->
+                            <div>
+                                <label for="font-family" class="block text-sm font-medium text-gray-400 mb-1">font</label>
+                                <select id="font-family" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition">
+                                    <option value="anton">anton</option>
+                                    <option value="inter">inter</option>
+                                    <option value="impact">impact</option>
+                                    <option value="arial">arial</option>
+                                    <option value="helvetica">helvetica</option>
+                                    <option value="comic sans ms">comic sans ms</option>
+                                </select>
+                            </div>
+                            <!-- font color -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="font-color" class="block text-sm font-medium text-gray-400 mb-1">text color</label>
+                                    <input type="color" id="font-color" value="#ffffff" class="w-full h-10 p-1 bg-gray-700 border-2 border-gray-600 rounded-lg cursor-pointer">
+                                </div>
+                                <div>
+                                    <label for="stroke-color" class="block text-sm font-medium text-gray-400 mb-1">outline color</label>
+                                    <input type="color" id="stroke-color" value="#000000" class="w-full h-10 p-1 bg-gray-700 border-2 border-gray-600 rounded-lg cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- separator -->
+                    <hr class="border-gray-700">
+
+                    <!-- download button -->
+                    <button id="download-btn" class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 transition-all duration-300 text-white font-semibold py-3 px-4 rounded-lg shadow-md disabled:bg-gray-500 disabled:cursor-not-allowed">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                        <span>download meme</span>
+                    </button>
+                </div>
+                
+                <!-- preview panel -->
+                <div class="lg:col-span-2 bg-black/30 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl flex items-center justify-center min-h-[400px] lg:min-h-0">
+                    <div id="canvas-container" class="w-full h-full flex items-center justify-center">
+                       <canvas id="meme-canvas" class="max-w-full max-h-full rounded-lg hidden touch-none"></canvas>
+                       <div id="placeholder" class="text-center text-gray-400 w-full h-full border-4 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center p-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2.4-2.2-4.5-4.5-5.8s-5.1-1.6-7.7-.8l-2.6 1.1L2.8 3.8 2 3l-1.3 1.3 2.5 2.5L2 8.1l1.3 1.3 1.3-1.3 1-1.1c-1.2.9-2.1 2.1-2.5 3.5-.4 1.4.1 2.9 1.1 4.1l-1.1 1.8 1.3 1.3 1.8-1.1c1.2 1 2.7 1.4 4.1 1.1s2.6-1.3 3.5-2.5l-1.1-1 .3-.3 1.3-1.3.3.3-1.1-1c.9-1.2 2.1-2.1 3.5-2.5.3-.1.7-.1 1-.1.7 0 1.3.1 1.9.4l1.1-1.8 1.3 1.3-1.1 1.8z"/><path d="M11 12c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"/></svg>
+                            <p class="text-2xl font-medium">your meme preview will appear here</p>
+                            <p>upload or drop an image to start.</p>
+                       </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- AI suggestions modal -->
+    <div id="ai-modal" class="modal fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
+        <div id="ai-modal-content" class="bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-6 transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-pink-300">ai caption suggestions</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-white">&times;</button>
+            </div>
+            <div id="ai-suggestions-container" class="space-y-2 max-h-64 overflow-y-auto">
+                <!-- suggestions will be populated here -->
+                <div id="ai-loader" class="text-center py-4">
+                    <svg class="animate-spin h-8 w-8 text-pink-400 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <p class="mt-2 text-gray-400">analyzing image and crafting captions...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // dom element references
+        const appWrapper = document.getElementById('app-wrapper');
+        const imageUpload = document.getElementById('image-upload');
+        const topTextInput = document.getElementById('top-text');
+        const bottomTextInput = document.getElementById('bottom-text');
+        const fontFamilySelect = document.getElementById('font-family');
+        const topFontSizeInput = document.getElementById('top-font-size');
+        const topFontSizeValue = document.getElementById('top-font-size-value');
+        const bottomFontSizeInput = document.getElementById('bottom-font-size');
+        const bottomFontSizeValue = document.getElementById('bottom-font-size-value');
+        const lineSpacingInput = document.getElementById('line-spacing');
+        const lineSpacingValue = document.getElementById('line-spacing-value');
+        const fontColorInput = document.getElementById('font-color');
+        const strokeColorInput = document.getElementById('stroke-color');
+        const downloadBtn = document.getElementById('download-btn');
+        const aiSuggestBtn = document.getElementById('ai-suggest-btn');
+        const aiModal = document.getElementById('ai-modal');
+        const aiModalContent = document.getElementById('ai-modal-content');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const aiSuggestionsContainer = document.getElementById('ai-suggestions-container');
+        const aiLoader = document.getElementById('ai-loader');
+        const canvas = document.getElementById('meme-canvas');
+        const placeholder = document.getElementById('placeholder');
+        const ctx = canvas.getContext('2d');
+
+        let image = null;
+
+        // text state objects using relative coordinates
+        let topTextState = { text: '', relX: 0.5, relY: 0.05, dragging: false, offsetX: 0, offsetY: 0 };
+        let bottomTextState = { text: '', relX: 0.5, relY: 0.95, dragging: false, offsetX: 0, offsetY: 0 };
+
+        // initial state
+        downloadBtn.disabled = true;
+
+        const drawMemeOnCanvas = (targetCtx, width, height, baseImage) => {
+            targetCtx.clearRect(0, 0, width, height);
+            targetCtx.drawImage(baseImage, 0, 0, width, height);
+            
+            const fontFamily = fontFamilySelect.value;
+            const fontColor = fontColorInput.value;
+            const strokeColor = strokeColorInput.value;
+            const lineSpacing = parseFloat(lineSpacingInput.value);
+
+            // draw top text
+            const topFontSize = width * (topFontSizeInput.value / 1000);
+            targetCtx.font = `${topFontSize}px ${fontFamily}`;
+            targetCtx.fillStyle = fontColor;
+            targetCtx.strokeStyle = strokeColor;
+            targetCtx.lineWidth = topFontSize / 20;
+            targetCtx.textAlign = 'center';
+            targetCtx.textBaseline = 'top';
+            const topX = width * topTextState.relX;
+            const topY = height * topTextState.relY;
+            wrapText(targetCtx, topTextState.text, topX, topY, width * 0.9, topFontSize * lineSpacing);
+
+            // draw bottom text
+            const bottomFontSize = width * (bottomFontSizeInput.value / 1000);
+            targetCtx.font = `${bottomFontSize}px ${fontFamily}`;
+            targetCtx.fillStyle = fontColor;
+            targetCtx.strokeStyle = strokeColor;
+            targetCtx.lineWidth = bottomFontSize / 20;
+            targetCtx.textAlign = 'center';
+            targetCtx.textBaseline = 'bottom';
+            const bottomX = width * bottomTextState.relX;
+            const bottomY = height * bottomTextState.relY;
+            wrapText(targetCtx, bottomTextState.text, bottomX, bottomY, width * 0.9, bottomFontSize * lineSpacing);
+        };
+
+        const redrawMeme = () => {
+            if (!image) return;
+            const aspectRatio = image.width / image.height;
+            const container = document.getElementById('canvas-container');
+            let canvasWidth = container.clientWidth;
+            let canvasHeight = canvasWidth / aspectRatio;
+            if (canvasHeight > container.clientHeight) {
+                canvasHeight = container.clientHeight;
+                canvasWidth = canvasHeight * aspectRatio;
+            }
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            drawMemeOnCanvas(ctx, canvas.width, canvas.height, image);
+        };
+        
+        function wrapText(targetCtx, text, x, y, maxWidth, lineHeight) {
+            const textLines = text.split('\n');
+            let totalLines = [];
+
+            textLines.forEach(textLine => {
+                const words = textLine.split(' ');
+                let line = '';
+                for(let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const testWidth = targetCtx.measureText(testLine).width;
+                    if (testWidth > maxWidth && n > 0) {
+                        totalLines.push(line);
+                        line = words[n] + ' ';
+                    } else {
+                        line = testLine;
+                    }
+                }
+                totalLines.push(line);
+            });
+
+            if (targetCtx.textBaseline === 'bottom') totalLines.reverse();
+            
+            totalLines.forEach((line, index) => {
+                const offset = (targetCtx.textBaseline === 'bottom') ? -index * lineHeight : index * lineHeight;
+                targetCtx.strokeText(line.trim(), x, y + offset);
+                targetCtx.fillText(line.trim(), x, y + offset);
+            });
+        }
+        
+        const updateImage = (file) => {
+             if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    image = new Image();
+                    image.onload = () => {
+                        placeholder.classList.add('hidden');
+                        canvas.classList.remove('hidden');
+                        downloadBtn.disabled = false;
+                        aiSuggestBtn.disabled = false;
+                        topTextState = { text: topTextInput.value, relX: 0.5, relY: 0.05, dragging: false, offsetX: 0, offsetY: 0 };
+                        bottomTextState = { text: bottomTextInput.value, relX: 0.5, relY: 0.95, dragging: false, offsetX: 0, offsetY: 0 };
+                        redrawMeme();
+                    };
+                    image.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        imageUpload.addEventListener('change', (e) => updateImage(e.target.files[0]));
+        
+        topTextInput.addEventListener('input', (e) => { topTextState.text = e.target.value; redrawMeme(); });
+        bottomTextInput.addEventListener('input', (e) => { bottomTextState.text = e.target.value; redrawMeme(); });
+        fontFamilySelect.addEventListener('change', redrawMeme);
+        topFontSizeInput.addEventListener('input', () => { topFontSizeValue.textContent = topFontSizeInput.value; redrawMeme(); });
+        bottomFontSizeInput.addEventListener('input', () => { bottomFontSizeValue.textContent = bottomFontSizeInput.value; redrawMeme(); });
+        lineSpacingInput.addEventListener('input', () => { lineSpacingValue.textContent = lineSpacingInput.value; redrawMeme(); });
+        fontColorInput.addEventListener('input', redrawMeme);
+        strokeColorInput.addEventListener('input', redrawMeme);
+        window.addEventListener('resize', redrawMeme);
+
+        downloadBtn.addEventListener('click', () => {
+            if (!image) return;
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = image.width;
+            tempCanvas.height = image.height;
+            drawMemeOnCanvas(tempCtx, image.width, image.height, image);
+            const randomChars = Math.random().toString(36).substring(2, 5);
+            const link = document.createElement('a');
+            link.download = `rajnishm${randomChars}.png`;
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+        });
+        
+        // --- file drag and drop logic ---
+        appWrapper.addEventListener('dragenter', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            appWrapper.classList.add('dragover');
+        });
+
+        appWrapper.addEventListener('dragover', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        appWrapper.addEventListener('dragleave', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            appWrapper.classList.remove('dragover');
+        });
+
+        appWrapper.addEventListener('drop', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            appWrapper.classList.remove('dragover');
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                updateImage(e.dataTransfer.files[0]);
+                e.dataTransfer.clearData();
+            }
+        });
+
+
+        // --- text dragging logic ---
+        const getMousePos = (canvasEl, evt) => {
+            const rect = canvasEl.getBoundingClientRect();
+            const scaleX = canvasEl.width / rect.width;
+            const scaleY = canvasEl.height / rect.height;
+            const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+            const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+            return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+        }
+
+        const getTextBoundingBox = (targetCtx, textState, fontSize, width, height, maxWidth, lineHeight) => {
+            targetCtx.font = `${fontSize}px ${fontFamilySelect.value}`;
+            const textLines = textState.text.split('\n');
+            let totalLines = [];
+            textLines.forEach(textLine => {
+                const words = textLine.split(' '); let line = '';
+                for(let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' '; const testWidth = targetCtx.measureText(testLine).width;
+                    if (testWidth > maxWidth && n > 0) { totalLines.push(line); line = words[n] + ' '; } 
+                    else { line = testLine; }
+                }
+                totalLines.push(line);
+            });
+            const textWidth = Math.max(...totalLines.map(l => targetCtx.measureText(l.trim()).width));
+            const textHeight = totalLines.length * lineHeight;
+            const x = textState.relX * width; const y = textState.relY * height;
+            const boxX = x - textWidth / 2;
+            let boxY;
+            if (targetCtx.textBaseline === 'top') { boxY = y; } else { boxY = y - textHeight; }
+            return { x: boxX, y: boxY, width: textWidth, height: textHeight };
+        }
+
+        const isPosInBox = (pos, box) => pos.x > box.x && pos.x < box.x + box.width && pos.y > box.y && pos.y < box.y + box.height;
+
+        const handleDragStart = (e) => {
+            e.preventDefault(); if (!image) return;
+            const pos = getMousePos(canvas, e);
+            const lineSpacing = parseFloat(lineSpacingInput.value);
+            
+            const topFontSize = canvas.width * (topFontSizeInput.value / 1000);
+            ctx.textBaseline = 'top';
+            const topBox = getTextBoundingBox(ctx, topTextState, topFontSize, canvas.width, canvas.height, canvas.width * 0.9, topFontSize * lineSpacing);
+            if (isPosInBox(pos, topBox)) {
+                topTextState.dragging = true;
+                topTextState.offsetX = pos.x - (topTextState.relX * canvas.width);
+                topTextState.offsetY = pos.y - (topTextState.relY * canvas.height);
+            }
+
+            const bottomFontSize = canvas.width * (bottomFontSizeInput.value / 1000);
+            ctx.textBaseline = 'bottom';
+            const bottomBox = getTextBoundingBox(ctx, bottomTextState, bottomFontSize, canvas.width, canvas.height, canvas.width * 0.9, bottomFontSize * lineSpacing);
+            if (isPosInBox(pos, bottomBox)) {
+                bottomTextState.dragging = true;
+                bottomTextState.offsetX = pos.x - (bottomTextState.relX * canvas.width);
+                bottomTextState.offsetY = pos.y - (bottomTextState.relY * canvas.height);
+            }
+        };
+
+        const handleDragMove = (e) => {
+            e.preventDefault(); if (!image) return;
+            if (topTextState.dragging || bottomTextState.dragging) {
+                const pos = getMousePos(canvas, e);
+                if (topTextState.dragging) {
+                    topTextState.relX = (pos.x - topTextState.offsetX) / canvas.width;
+                    topTextState.relY = (pos.y - topTextState.offsetY) / canvas.height;
+                }
+                if (bottomTextState.dragging) {
+                    bottomTextState.relX = (pos.x - bottomTextState.offsetX) / canvas.width;
+                    bottomTextState.relY = (pos.y - bottomTextState.offsetY) / canvas.height;
+                }
+                redrawMeme();
+            }
+        };
+
+        const handleDragEnd = (e) => { e.preventDefault(); topTextState.dragging = false; bottomTextState.dragging = false; };
+        canvas.addEventListener('mousedown', handleDragStart); canvas.addEventListener('touchstart', handleDragStart, { passive: false });
+        canvas.addEventListener('mousemove', handleDragMove); canvas.addEventListener('touchmove', handleDragMove, { passive: false });
+        window.addEventListener('mouseup', handleDragEnd); window.addEventListener('touchend', handleDragEnd);
+
+        // --- AI Modal Logic ---
+        const openModal = () => { aiModal.classList.remove('opacity-0', 'pointer-events-none'); aiModalContent.classList.remove('scale-95'); };
+        const closeModal = () => { aiModal.classList.add('opacity-0', 'pointer-events-none'); aiModalContent.classList.add('scale-95'); };
+        
+        aiSuggestBtn.addEventListener('click', async () => {
+            if (!image) return;
+            openModal();
+            aiSuggestionsContainer.innerHTML = '';
+            aiSuggestionsContainer.appendChild(aiLoader);
+            aiLoader.style.display = 'block';
+
+            // get base64 image data
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = image.width; tempCanvas.height = image.height;
+            tempCanvas.getContext('2d').drawImage(image, 0, 0);
+            const base64ImageData = tempCanvas.toDataURL('image/jpeg').split(',')[1];
+            
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{
+                    parts: [
+                        { text: "act as a meme expert. provide 5 short, witty, and funny meme captions for this image. use the format 'top text: [your top caption]\nbottom text: [your bottom caption]'. if a caption only needs one line, use 'top text: [your caption]' and 'bottom text: ' or vice-versa." },
+                        { inlineData: { mimeType: "image/jpeg", data: base64ImageData } }
+                    ]
+                }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    throw new Error(`api request failed: ${response.status} ${response.statusText} - ${errorBody}`);
+                }
+
+                const result = await response.json();
+                aiLoader.style.display = 'none';
+                
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!text) {
+                     aiSuggestionsContainer.innerHTML = '<p class="text-center text-red-400">sorry, the ai couldn\'t generate captions. this can happen due to safety policies. please try a different image.</p>';
+                     console.error('ai error: invalid response structure from api', result);
+                     return;
+                }
+                
+                const suggestions = text.split('\n\n').filter(s => s.trim() !== '');
+
+                if (suggestions.length === 0) {
+                    aiSuggestionsContainer.innerHTML = '<p class="text-center text-gray-400">the ai couldn\'t find any suggestions. try another image!</p>';
+                    return;
+                }
+
+                suggestions.forEach(suggestion => {
+                    const button = document.createElement('button');
+                    button.className = 'w-full p-3 bg-gray-700 hover:bg-pink-600 rounded-lg text-left transition-colors';
+                    button.textContent = suggestion.replace(/top text: |bottom text: /gi, '').replace('\n', ' / ');
+                    button.onclick = () => {
+                        const topMatch = suggestion.match(/top text: (.*)/i);
+                        const bottomMatch = suggestion.match(/bottom text: (.*)/i);
+                        topTextInput.value = topMatch ? topMatch[1].trim() : '';
+                        bottomTextInput.value = bottomMatch ? bottomMatch[1].trim() : '';
+                        topTextState.text = topTextInput.value;
+                        bottomTextState.text = bottomTextInput.value;
+                        closeModal();
+                        redrawMeme();
+                    };
+                    aiSuggestionsContainer.appendChild(button);
+                });
+
+            } catch (error) {
+                aiLoader.style.display = 'none';
+                aiSuggestionsContainer.innerHTML = '<p class="text-center text-red-400">an error occurred while fetching suggestions. please check the console and try again.</p>';
+                console.error('ai error:', error);
+            }
+        });
+        
+        closeModalBtn.addEventListener('click', closeModal);
+        aiModal.addEventListener('click', (e) => { if (e.target === aiModal) closeModal(); });
+
+    </script>
+</body>
+</html>
+
