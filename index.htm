@@ -196,6 +196,7 @@
         // dom element references
         const appWrapper = document.getElementById('app-wrapper');
         const imageUpload = document.getElementById('image-upload');
+        const uploadLabel = document.querySelector('label[for="image-upload"]'); // Added for touch event
         const topTextInput = document.getElementById('top-text');
         const bottomTextInput = document.getElementById('bottom-text');
         const fontFamilySelect = document.getElementById('font-family');
@@ -226,6 +227,14 @@
 
         // initial state
         downloadBtn.disabled = true;
+        
+        // --- FIX FOR TOUCH DEVICES ---
+        // Trigger file input click on touchstart for the label
+        uploadLabel.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent potential double-triggering
+            imageUpload.click();
+        });
+
 
         const drawMemeOnCanvas = (targetCtx, width, height, baseImage) => {
             targetCtx.clearRect(0, 0, width, height);
@@ -238,7 +247,8 @@
 
             // draw top text
             const topFontSize = width * (topFontSizeInput.value / 1000);
-            targetCtx.font = `${topFontSize}px ${fontFamily}`;
+             // --- FIX FOR FONT CHANGE ---
+            targetCtx.font = `${topFontSize}px "${fontFamily}"`;
             targetCtx.fillStyle = fontColor;
             targetCtx.strokeStyle = strokeColor;
             targetCtx.lineWidth = topFontSize / 20;
@@ -250,7 +260,8 @@
 
             // draw bottom text
             const bottomFontSize = width * (bottomFontSizeInput.value / 1000);
-            targetCtx.font = `${bottomFontSize}px ${fontFamily}`;
+             // --- FIX FOR FONT CHANGE ---
+            targetCtx.font = `${bottomFontSize}px "${fontFamily}"`;
             targetCtx.fillStyle = fontColor;
             targetCtx.strokeStyle = strokeColor;
             targetCtx.lineWidth = bottomFontSize / 20;
@@ -260,7 +271,7 @@
             const bottomY = height * bottomTextState.relY;
             wrapText(targetCtx, bottomTextState.text, bottomX, bottomY, width * 0.9, bottomFontSize * lineSpacing);
         };
-
+        
         const redrawMeme = () => {
             if (!image) return;
             const aspectRatio = image.width / image.height;
@@ -275,6 +286,19 @@
             canvas.height = canvasHeight;
             drawMemeOnCanvas(ctx, canvas.width, canvas.height, image);
         };
+        
+        async function loadFontAndRedraw() {
+            const fontFamily = fontFamilySelect.value;
+            try {
+                // Use the FontFaceSet API to ensure the font is loaded
+                await document.fonts.load(`1em "${fontFamily}"`);
+                redrawMeme();
+            } catch (err) {
+                console.error(`Could not load font: ${fontFamily}`, err);
+                // Fallback or redraw anyway
+                redrawMeme();
+            }
+        }
         
         function wrapText(targetCtx, text, x, y, maxWidth, lineHeight) {
             const textLines = text.split('\n');
@@ -329,7 +353,7 @@
         
         topTextInput.addEventListener('input', (e) => { topTextState.text = e.target.value; redrawMeme(); });
         bottomTextInput.addEventListener('input', (e) => { bottomTextState.text = e.target.value; redrawMeme(); });
-        fontFamilySelect.addEventListener('change', redrawMeme);
+        fontFamilySelect.addEventListener('change', loadFontAndRedraw);
         topFontSizeInput.addEventListener('input', () => { topFontSizeValue.textContent = topFontSizeInput.value; redrawMeme(); });
         bottomFontSizeInput.addEventListener('input', () => { bottomFontSizeValue.textContent = bottomFontSizeInput.value; redrawMeme(); });
         lineSpacingInput.addEventListener('input', () => { lineSpacingValue.textContent = lineSpacingInput.value; redrawMeme(); });
@@ -391,7 +415,8 @@
         }
 
         const getTextBoundingBox = (targetCtx, textState, fontSize, width, height, maxWidth, lineHeight) => {
-            targetCtx.font = `${fontSize}px ${fontFamilySelect.value}`;
+             // --- FIX FOR FONT CHANGE ---
+            targetCtx.font = `${fontSize}px "${fontFamilySelect.value}"`;
             const textLines = textState.text.split('\n');
             let totalLines = [];
             textLines.forEach(textLine => {
@@ -477,7 +502,7 @@
             const base64ImageData = tempCanvas.toDataURL('image/jpeg').split(',')[1];
             
             const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{
                     parts: [
@@ -547,4 +572,3 @@
     </script>
 </body>
 </html>
-
