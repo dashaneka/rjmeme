@@ -81,7 +81,9 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                             <span>upload image</span>
                         </label>
-                        <input type="file" id="image-upload" class="hidden" accept="image/*">
+                        <!-- ===== FIX FOR MOBILE UPLOAD ===== -->
+                        <!-- The "hidden" class was replaced with sr-only equivalent classes to ensure the label can trigger it on mobile -->
+                        <input type="file" id="image-upload" class="absolute w-px h-px p-0 -m-px overflow-hidden [clip:rect(0,0,0,0)] whitespace-nowrap border-0" accept="image/*">
                         <p class="text-xs text-gray-500 mt-2 text-center">or drop a file anywhere</p>
                     </div>
                     
@@ -196,7 +198,6 @@
         // dom element references
         const appWrapper = document.getElementById('app-wrapper');
         const imageUpload = document.getElementById('image-upload');
-        const uploadLabel = document.querySelector('label[for="image-upload"]'); // Added for touch event
         const topTextInput = document.getElementById('top-text');
         const bottomTextInput = document.getElementById('bottom-text');
         const fontFamilySelect = document.getElementById('font-family');
@@ -227,14 +228,6 @@
 
         // initial state
         downloadBtn.disabled = true;
-        
-        // --- FIX FOR TOUCH DEVICES ---
-        // Trigger file input click on touchstart for the label
-        uploadLabel.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Prevent potential double-triggering
-            imageUpload.click();
-        });
-
 
         const drawMemeOnCanvas = (targetCtx, width, height, baseImage) => {
             targetCtx.clearRect(0, 0, width, height);
@@ -247,7 +240,6 @@
 
             // draw top text
             const topFontSize = width * (topFontSizeInput.value / 1000);
-             // --- FIX FOR FONT CHANGE ---
             targetCtx.font = `${topFontSize}px "${fontFamily}"`;
             targetCtx.fillStyle = fontColor;
             targetCtx.strokeStyle = strokeColor;
@@ -260,7 +252,6 @@
 
             // draw bottom text
             const bottomFontSize = width * (bottomFontSizeInput.value / 1000);
-             // --- FIX FOR FONT CHANGE ---
             targetCtx.font = `${bottomFontSize}px "${fontFamily}"`;
             targetCtx.fillStyle = fontColor;
             targetCtx.strokeStyle = strokeColor;
@@ -296,7 +287,7 @@
             } catch (err) {
                 console.error(`Could not load font: ${fontFamily}`, err);
                 // Fallback or redraw anyway
-                redrawMeme();
+                redrawMame();
             }
         }
         
@@ -415,7 +406,6 @@
         }
 
         const getTextBoundingBox = (targetCtx, textState, fontSize, width, height, maxWidth, lineHeight) => {
-             // --- FIX FOR FONT CHANGE ---
             targetCtx.font = `${fontSize}px "${fontFamilySelect.value}"`;
             const textLines = textState.text.split('\n');
             let totalLines = [];
