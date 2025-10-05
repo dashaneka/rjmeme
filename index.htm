@@ -10,50 +10,44 @@
         body {
             font-family: 'inter', sans-serif;
         }
-        /* custom scrollbar for a better look */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #2d3748;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4a5568;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #718096;
-        }
-        /* styling for the range slider */
+        /* custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2d3748; }
+        ::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #718096; }
+        
+        /* range slider styling */
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #db2777;
-            cursor: pointer;
-            border-radius: 50%;
-            border: 2px solid white;
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px;
+            background: #db2777; cursor: pointer;
+            border-radius: 50%; border: 2px solid white;
         }
         input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #db2777;
+            width: 20px; height: 20px;
+            background: #db2777; cursor: pointer;
+            border-radius: 50%; border: 2px solid white;
+        }
+
+        .modal { transition: opacity 0.25s ease; }
+
+        /* --- IOS UPLOAD FIX STYLES --- */
+        /* Container for the button look */
+        .file-input-label {
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
             cursor: pointer;
-            border-radius: 50%;
-            border: 2px solid white;
         }
-        /* custom file input button */
-        .file-input-button {
+        /* The actual input, stretched and invisible over the label */
+        .file-input-label input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
             cursor: pointer;
-        }
-        .modal {
-            transition: opacity 0.25s ease;
-        }
-        #app-wrapper.dragover {
-            transform: scale(0.995);
-            box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.7);
-            border-radius: 1.5rem; /* corresponds to rounded-2xl on main divs */
         }
     </style>
 </head>
@@ -74,20 +68,18 @@
                 <!-- controls panel -->
                 <div class="lg:col-span-1 bg-black/30 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl space-y-6 h-fit lg:sticky top-8">
                     
-                    <!-- image upload -->
+                    <!-- image upload (UPDATED FOR IOS) -->
                     <div>
                         <h2 class="text-xl font-semibold mb-3 text-pink-300">1. choose your image</h2>
-                        <label for="image-upload" class="file-input-button w-full flex items-center justify-center gap-2 bg-pink-600 hover:bg-pink-700 transition-all duration-300 text-white font-semibold py-3 px-4 rounded-lg shadow-md">
+                        <!-- The label now contains the input and the styling -->
+                        <label class="file-input-label w-full flex items-center justify-center gap-2 bg-pink-600 hover:bg-pink-700 transition-all duration-300 text-white font-semibold py-3 px-4 rounded-lg shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                             <span>upload image</span>
+                            <!-- The actual input is here, invisible -->
+                            <input type="file" id="image-upload" accept="image/*">
                         </label>
-                        <!-- ===== FIX FOR MOBILE UPLOAD ===== -->
-                        <!-- The "hidden" class was replaced with sr-only equivalent classes to ensure the label can trigger it on mobile -->
-                        <input type="file" id="image-upload" class="absolute w-px h-px p-0 -m-px overflow-hidden [clip:rect(0,0,0,0)] whitespace-nowrap border-0" accept="image/*">
-                        <p class="text-xs text-gray-500 mt-2 text-center">or drop a file anywhere</p>
                     </div>
                     
-                    <!-- separator -->
                     <hr class="border-gray-700">
 
                     <!-- text inputs -->
@@ -95,7 +87,7 @@
                         <div class="flex items-center justify-between mb-3">
                             <h2 class="text-xl font-semibold text-pink-300">2. add your text</h2>
                             <button id="ai-suggest-btn" disabled class="disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md transition-all">
-                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magic" viewBox="0 0 16 16"><path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0v1.829Zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707L14 2.707a.5.5 0 0 0 0-.707ZM7.293 4L8 3.293a.5.5 0 1 0-.707-.707L6.586 2a.5.5 0 0 0 0 .707l.707.707ZM5 2.672a.5.5 0 1 0-1 0V.843a.5.5 0 0 0 1 0v1.829Z M1.5 13.293l.707.707a.5.5 0 0 0 .707 0L4 12.707a.5.5 0 0 0 0-.707L2.707 10.5a.5.5 0 0 0-.707 0l-.707.707a.5.5 0 0 0 0 .707Zm10.5 0a.5.5 0 0 0 0 .707l.707.707a.5.5 0 0 0 .707 0l.707-.707a.5.5 0 0 0 0-.707l-.707-.707a.5.5 0 0 0-.707 0L12 12.707a.5.5 0 0 0 0 .707ZM8.5 4.5a.5.5 0 0 0-1 0v1.536a.5.5 0 0 0 1 0V4.5ZM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Z"/></svg>
+                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0v1.829Zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707L14 2.707a.5.5 0 0 0 0-.707ZM7.293 4L8 3.293a.5.5 0 1 0-.707-.707L6.586 2a.5.5 0 0 0 0 .707l.707.707ZM5 2.672a.5.5 0 1 0-1 0V.843a.5.5 0 0 0 1 0v1.829Z M1.5 13.293l.707.707a.5.5 0 0 0 .707 0L4 12.707a.5.5 0 0 0 0-.707L2.707 10.5a.5.5 0 0 0-.707 0l-.707.707a.5.5 0 0 0 0 .707Zm10.5 0a.5.5 0 0 0 0 .707l.707.707a.5.5 0 0 0 .707 0l.707-.707a.5.5 0 0 0 0-.707l-.707-.707a.5.5 0 0 0-.707 0L12 12.707a.5.5 0 0 0 0 .707ZM8.5 4.5a.5.5 0 0 0-1 0v1.536a.5.5 0 0 0 1 0V4.5ZM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Z"/></svg>
                                 suggest with ai
                             </button>
                         </div>
@@ -105,7 +97,6 @@
                         </div>
                     </div>
 
-                    <!-- separator -->
                     <hr class="border-gray-700">
 
                     <!-- styling controls -->
@@ -151,7 +142,6 @@
                         </div>
                     </div>
 
-                    <!-- separator -->
                     <hr class="border-gray-700">
 
                     <!-- download button -->
@@ -168,7 +158,7 @@
                        <div id="placeholder" class="text-center text-gray-400 w-full h-full border-4 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center p-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2.4-2.2-4.5-4.5-5.8s-5.1-1.6-7.7-.8l-2.6 1.1L2.8 3.8 2 3l-1.3 1.3 2.5 2.5L2 8.1l1.3 1.3 1.3-1.3 1-1.1c-1.2.9-2.1 2.1-2.5 3.5-.4 1.4.1 2.9 1.1 4.1l-1.1 1.8 1.3 1.3 1.8-1.1c1.2 1 2.7 1.4 4.1 1.1s2.6-1.3 3.5-2.5l-1.1-1 .3-.3 1.3-1.3.3.3-1.1-1c.9-1.2 2.1-2.1 3.5-2.5.3-.1.7-.1 1-.1.7 0 1.3.1 1.9.4l1.1-1.8 1.3 1.3-1.1 1.8z"/><path d="M11 12c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"/></svg>
                             <p class="text-2xl font-medium">your meme preview will appear here</p>
-                            <p>upload or drop an image to start.</p>
+                            <p>upload an image to start.</p>
                        </div>
                     </div>
                 </div>
@@ -240,6 +230,7 @@
 
             // draw top text
             const topFontSize = width * (topFontSizeInput.value / 1000);
+            // Fix: quote font names
             targetCtx.font = `${topFontSize}px "${fontFamily}"`;
             targetCtx.fillStyle = fontColor;
             targetCtx.strokeStyle = strokeColor;
@@ -252,6 +243,7 @@
 
             // draw bottom text
             const bottomFontSize = width * (bottomFontSizeInput.value / 1000);
+            // Fix: quote font names
             targetCtx.font = `${bottomFontSize}px "${fontFamily}"`;
             targetCtx.fillStyle = fontColor;
             targetCtx.strokeStyle = strokeColor;
@@ -262,7 +254,7 @@
             const bottomY = height * bottomTextState.relY;
             wrapText(targetCtx, bottomTextState.text, bottomX, bottomY, width * 0.9, bottomFontSize * lineSpacing);
         };
-        
+
         const redrawMeme = () => {
             if (!image) return;
             const aspectRatio = image.width / image.height;
@@ -278,6 +270,7 @@
             drawMemeOnCanvas(ctx, canvas.width, canvas.height, image);
         };
         
+        // Fix: Ensure font is loaded before redrawing
         async function loadFontAndRedraw() {
             const fontFamily = fontFamilySelect.value;
             try {
@@ -287,7 +280,7 @@
             } catch (err) {
                 console.error(`Could not load font: ${fontFamily}`, err);
                 // Fallback or redraw anyway
-                redrawMame();
+                redrawMeme();
             }
         }
         
@@ -330,8 +323,9 @@
                         canvas.classList.remove('hidden');
                         downloadBtn.disabled = false;
                         aiSuggestBtn.disabled = false;
-                        topTextState = { text: topTextInput.value, relX: 0.5, relY: 0.05, dragging: false, offsetX: 0, offsetY: 0 };
-                        bottomTextState = { text: bottomTextInput.value, relX: 0.5, relY: 0.95, dragging: false, offsetX: 0, offsetY: 0 };
+                        // reset text positions on new image
+                        topTextState.relX = 0.5; topTextState.relY = 0.05;
+                        bottomTextState.relX = 0.5; bottomTextState.relY = 0.95;
                         redrawMeme();
                     };
                     image.src = event.target.result;
@@ -340,10 +334,13 @@
             }
         };
 
+        // Event Listeners
+        // Note: imageUpload listener handles the actual file selection from the invisible input
         imageUpload.addEventListener('change', (e) => updateImage(e.target.files[0]));
         
         topTextInput.addEventListener('input', (e) => { topTextState.text = e.target.value; redrawMeme(); });
         bottomTextInput.addEventListener('input', (e) => { bottomTextState.text = e.target.value; redrawMeme(); });
+        // Fix: use loadFontAndRedraw
         fontFamilySelect.addEventListener('change', loadFontAndRedraw);
         topFontSizeInput.addEventListener('input', () => { topFontSizeValue.textContent = topFontSizeInput.value; redrawMeme(); });
         bottomFontSizeInput.addEventListener('input', () => { bottomFontSizeValue.textContent = bottomFontSizeInput.value; redrawMeme(); });
@@ -358,54 +355,32 @@
             const tempCtx = tempCanvas.getContext('2d');
             tempCanvas.width = image.width;
             tempCanvas.height = image.height;
-            drawMemeOnCanvas(tempCtx, image.width, image.height, image);
-            const randomChars = Math.random().toString(36).substring(2, 5);
-            const link = document.createElement('a');
-            link.download = `rajnishm${randomChars}.png`;
-            link.href = tempCanvas.toDataURL('image/png');
-            link.click();
+            // Ensure fonts are loaded for download render too
+            document.fonts.load(`1em "${fontFamilySelect.value}"`).then(() => {
+                drawMemeOnCanvas(tempCtx, image.width, image.height, image);
+                const randomChars = Math.random().toString(36).substring(2, 5);
+                const link = document.createElement('a');
+                link.download = `meme-maestro-${randomChars}.png`;
+                link.href = tempCanvas.toDataURL('image/png');
+                link.click();
+            });
         });
         
-        // --- file drag and drop logic ---
-        appWrapper.addEventListener('dragenter', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            appWrapper.classList.add('dragover');
-        });
-
-        appWrapper.addEventListener('dragover', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-        });
-
-        appWrapper.addEventListener('dragleave', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            appWrapper.classList.remove('dragover');
-        });
-
-        appWrapper.addEventListener('drop', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            appWrapper.classList.remove('dragover');
-            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                updateImage(e.dataTransfer.files[0]);
-                e.dataTransfer.clearData();
-            }
-        });
-
+        // (Drag and Drop logic removed for mobile simplicity)
 
         // --- text dragging logic ---
         const getMousePos = (canvasEl, evt) => {
             const rect = canvasEl.getBoundingClientRect();
             const scaleX = canvasEl.width / rect.width;
             const scaleY = canvasEl.height / rect.height;
-            const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
-            const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+            // Handle both touch and mouse events
+            const clientX = evt.touches && evt.touches.length > 0 ? evt.touches[0].clientX : evt.clientX;
+            const clientY = evt.touches && evt.touches.length > 0 ? evt.touches[0].clientY : evt.clientY;
             return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
         }
 
         const getTextBoundingBox = (targetCtx, textState, fontSize, width, height, maxWidth, lineHeight) => {
+            // Fix: quote font names
             targetCtx.font = `${fontSize}px "${fontFamilySelect.value}"`;
             const textLines = textState.text.split('\n');
             let totalLines = [];
@@ -418,61 +393,94 @@
                 }
                 totalLines.push(line);
             });
+            // If no text, return 0 size box
+            if (totalLines.length === 0 || (totalLines.length === 1 && totalLines[0].trim() === '')) {
+                 return { x: 0, y: 0, width: 0, height: 0 };
+            }
+
             const textWidth = Math.max(...totalLines.map(l => targetCtx.measureText(l.trim()).width));
             const textHeight = totalLines.length * lineHeight;
             const x = textState.relX * width; const y = textState.relY * height;
-            const boxX = x - textWidth / 2;
+            
+            // Add some padding for easier grabbing
+            const padding = fontSize * 0.5; 
+            const boxX = x - textWidth / 2 - padding/2;
             let boxY;
-            if (targetCtx.textBaseline === 'top') { boxY = y; } else { boxY = y - textHeight; }
-            return { x: boxX, y: boxY, width: textWidth, height: textHeight };
+            if (targetCtx.textBaseline === 'top') { boxY = y - padding/2; } else { boxY = y - textHeight - padding/2; }
+            return { x: boxX, y: boxY, width: textWidth + padding, height: textHeight + padding };
         }
 
         const isPosInBox = (pos, box) => pos.x > box.x && pos.x < box.x + box.width && pos.y > box.y && pos.y < box.y + box.height;
 
         const handleDragStart = (e) => {
-            e.preventDefault(); if (!image) return;
+            if (!image) return;
+            // Don't prevent default immediately specifically for touch to allow scrolling if not hitting text
+            
             const pos = getMousePos(canvas, e);
             const lineSpacing = parseFloat(lineSpacingInput.value);
-            
-            const topFontSize = canvas.width * (topFontSizeInput.value / 1000);
-            ctx.textBaseline = 'top';
-            const topBox = getTextBoundingBox(ctx, topTextState, topFontSize, canvas.width, canvas.height, canvas.width * 0.9, topFontSize * lineSpacing);
-            if (isPosInBox(pos, topBox)) {
-                topTextState.dragging = true;
-                topTextState.offsetX = pos.x - (topTextState.relX * canvas.width);
-                topTextState.offsetY = pos.y - (topTextState.relY * canvas.height);
+            let hit = false;
+
+            // Check top text
+            if (topTextState.text.trim() !== '') {
+                const topFontSize = canvas.width * (topFontSizeInput.value / 1000);
+                ctx.textBaseline = 'top';
+                const topBox = getTextBoundingBox(ctx, topTextState, topFontSize, canvas.width, canvas.height, canvas.width * 0.9, topFontSize * lineSpacing);
+                if (isPosInBox(pos, topBox)) {
+                    e.preventDefault(); // Prevent scrolling now that we grabbed text
+                    topTextState.dragging = true;
+                    topTextState.offsetX = pos.x - (topTextState.relX * canvas.width);
+                    topTextState.offsetY = pos.y - (topTextState.relY * canvas.height);
+                    hit = true;
+                }
             }
 
-            const bottomFontSize = canvas.width * (bottomFontSizeInput.value / 1000);
-            ctx.textBaseline = 'bottom';
-            const bottomBox = getTextBoundingBox(ctx, bottomTextState, bottomFontSize, canvas.width, canvas.height, canvas.width * 0.9, bottomFontSize * lineSpacing);
-            if (isPosInBox(pos, bottomBox)) {
-                bottomTextState.dragging = true;
-                bottomTextState.offsetX = pos.x - (bottomTextState.relX * canvas.width);
-                bottomTextState.offsetY = pos.y - (bottomTextState.relY * canvas.height);
+            // Check bottom text (if top wasn't hit)
+            if (!hit && bottomTextState.text.trim() !== '') {
+                const bottomFontSize = canvas.width * (bottomFontSizeInput.value / 1000);
+                ctx.textBaseline = 'bottom';
+                const bottomBox = getTextBoundingBox(ctx, bottomTextState, bottomFontSize, canvas.width, canvas.height, canvas.width * 0.9, bottomFontSize * lineSpacing);
+                if (isPosInBox(pos, bottomBox)) {
+                    e.preventDefault(); // Prevent scrolling
+                    bottomTextState.dragging = true;
+                    bottomTextState.offsetX = pos.x - (bottomTextState.relX * canvas.width);
+                    bottomTextState.offsetY = pos.y - (bottomTextState.relY * canvas.height);
+                }
             }
         };
 
         const handleDragMove = (e) => {
-            e.preventDefault(); if (!image) return;
+            if (!image) return;
             if (topTextState.dragging || bottomTextState.dragging) {
+                e.preventDefault(); // Stop scrolling while dragging
                 const pos = getMousePos(canvas, e);
+                // Clamp positions to keep text roughly on screen
                 if (topTextState.dragging) {
-                    topTextState.relX = (pos.x - topTextState.offsetX) / canvas.width;
-                    topTextState.relY = (pos.y - topTextState.offsetY) / canvas.height;
+                    topTextState.relX = Math.max(0, Math.min(1, (pos.x - topTextState.offsetX) / canvas.width));
+                    topTextState.relY = Math.max(0, Math.min(1, (pos.y - topTextState.offsetY) / canvas.height));
                 }
                 if (bottomTextState.dragging) {
-                    bottomTextState.relX = (pos.x - bottomTextState.offsetX) / canvas.width;
-                    bottomTextState.relY = (pos.y - bottomTextState.offsetY) / canvas.height;
+                    bottomTextState.relX = Math.max(0, Math.min(1, (pos.x - bottomTextState.offsetX) / canvas.width));
+                    bottomTextState.relY = Math.max(0, Math.min(1, (pos.y - bottomTextState.offsetY) / canvas.height));
                 }
                 redrawMeme();
             }
         };
 
-        const handleDragEnd = (e) => { e.preventDefault(); topTextState.dragging = false; bottomTextState.dragging = false; };
-        canvas.addEventListener('mousedown', handleDragStart); canvas.addEventListener('touchstart', handleDragStart, { passive: false });
-        canvas.addEventListener('mousemove', handleDragMove); canvas.addEventListener('touchmove', handleDragMove, { passive: false });
-        window.addEventListener('mouseup', handleDragEnd); window.addEventListener('touchend', handleDragEnd);
+        const handleDragEnd = (e) => { 
+            if(topTextState.dragging || bottomTextState.dragging) {
+                 e.preventDefault();
+            }
+            topTextState.dragging = false; 
+            bottomTextState.dragging = false; 
+        };
+
+        // Add { passive: false } specifically for touch events where we call preventDefault()
+        canvas.addEventListener('mousedown', handleDragStart); 
+        canvas.addEventListener('touchstart', handleDragStart, { passive: false });
+        window.addEventListener('mousemove', handleDragMove); // Move on window specifically for mouse
+        window.addEventListener('touchmove', handleDragMove, { passive: false }); // Move on window for touch
+        window.addEventListener('mouseup', handleDragEnd); 
+        window.addEventListener('touchend', handleDragEnd);
 
         // --- AI Modal Logic ---
         const openModal = () => { aiModal.classList.remove('opacity-0', 'pointer-events-none'); aiModalContent.classList.remove('scale-95'); };
@@ -485,18 +493,29 @@
             aiSuggestionsContainer.appendChild(aiLoader);
             aiLoader.style.display = 'block';
 
-            // get base64 image data
             const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = image.width; tempCanvas.height = image.height;
-            tempCanvas.getContext('2d').drawImage(image, 0, 0);
-            const base64ImageData = tempCanvas.toDataURL('image/jpeg').split(',')[1];
+            // Resize for AI to save bandwidth/time (max 512px)
+            const scale = Math.min(1, 512 / Math.max(image.width, image.height));
+            tempCanvas.width = image.width * scale;
+            tempCanvas.height = image.height * scale;
+            tempCanvas.getContext('2d').drawImage(image, 0, 0, tempCanvas.width, tempCanvas.height);
+            const base64ImageData = tempCanvas.toDataURL('image/jpeg', 0.8).split(',')[1];
             
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${apiKey}`;
+            // IMPORTANT: INSERT YOUR GEMINI API KEY HERE
+            const apiKey = "AIzaSyBrjM5UoMscd7zD1vw4lrmxQz5E0Tokz3Q"; 
+            
+            if (!apiKey) {
+                 aiLoader.style.display = 'none';
+                 aiSuggestionsContainer.innerHTML = '<p class="text-center text-yellow-400">please add your api key in the code to use ai features.</p>';
+                 return;
+            }
+
+            // Using gemini-1.5-flash for better speed/cost
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{
                     parts: [
-                        { text: "act as a meme expert. provide 5 short, witty, and funny meme captions for this image. use the format 'top text: [your top caption]\nbottom text: [your bottom caption]'. if a caption only needs one line, use 'top text: [your caption]' and 'bottom text: ' or vice-versa." },
+                        { text: "act as a meme expert. provide 5 short, witty, and funny meme captions for this image. use the format 'top text: [your top caption]\nbottom text: [your bottom caption]'. if a caption only needs one line, use 'top text: [your caption]' and 'bottom text: ' or vice-versa. keep them concise." },
                         { inlineData: { mimeType: "image/jpeg", data: base64ImageData } }
                     ]
                 }]
@@ -510,39 +529,46 @@
                 });
 
                 if (!response.ok) {
-                    const errorBody = await response.text();
-                    throw new Error(`api request failed: ${response.status} ${response.statusText} - ${errorBody}`);
+                    throw new Error(`api error: ${response.status}`);
                 }
 
                 const result = await response.json();
                 aiLoader.style.display = 'none';
-                
                 const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
 
                 if (!text) {
-                     aiSuggestionsContainer.innerHTML = '<p class="text-center text-red-400">sorry, the ai couldn\'t generate captions. this can happen due to safety policies. please try a different image.</p>';
-                     console.error('ai error: invalid response structure from api', result);
+                     aiSuggestionsContainer.innerHTML = '<p class="text-center text-gray-400">no captions generated. try another image.</p>';
                      return;
                 }
                 
-                const suggestions = text.split('\n\n').filter(s => s.trim() !== '');
+                // improved splitting to handle potential variations in ai output
+                const suggestions = text.split(/(\n\n|\r\n\r\n)/).filter(s => s.trim().toLowerCase().includes('text:'));
 
                 if (suggestions.length === 0) {
-                    aiSuggestionsContainer.innerHTML = '<p class="text-center text-gray-400">the ai couldn\'t find any suggestions. try another image!</p>';
+                    aiSuggestionsContainer.innerHTML = '<p class="text-center text-gray-400">couldn\'t parse suggestions. try again.</p>';
                     return;
                 }
 
                 suggestions.forEach(suggestion => {
                     const button = document.createElement('button');
-                    button.className = 'w-full p-3 bg-gray-700 hover:bg-pink-600 rounded-lg text-left transition-colors';
-                    button.textContent = suggestion.replace(/top text: |bottom text: /gi, '').replace('\n', ' / ');
+                    button.className = 'w-full p-3 bg-gray-700 hover:bg-pink-600 rounded-lg text-left transition-colors text-sm border border-gray-600 mb-2';
+                    
+                    const topMatch = suggestion.match(/top text:\s*(.*)/i);
+                    const bottomMatch = suggestion.match(/bottom text:\s*(.*)/i);
+                    const topVal = topMatch ? topMatch[1].trim() : '';
+                    const bottomVal = bottomMatch ? bottomMatch[1].trim() : '';
+
+                    // Create a clean preview for the button
+                    let previewHtml = '';
+                    if (topVal) previewHtml += `<div class="font-bold text-white">${topVal}</div>`;
+                    if (bottomVal) previewHtml += `<div class="text-gray-300">${bottomVal}</div>`;
+                    button.innerHTML = previewHtml || '<div class="text-gray-400 italic">empty caption</div>';
+
                     button.onclick = () => {
-                        const topMatch = suggestion.match(/top text: (.*)/i);
-                        const bottomMatch = suggestion.match(/bottom text: (.*)/i);
-                        topTextInput.value = topMatch ? topMatch[1].trim() : '';
-                        bottomTextInput.value = bottomMatch ? bottomMatch[1].trim() : '';
-                        topTextState.text = topTextInput.value;
-                        bottomTextState.text = bottomTextInput.value;
+                        topTextInput.value = topVal;
+                        bottomTextInput.value = bottomVal;
+                        topTextState.text = topVal;
+                        bottomTextState.text = bottomVal;
                         closeModal();
                         redrawMeme();
                     };
@@ -551,7 +577,7 @@
 
             } catch (error) {
                 aiLoader.style.display = 'none';
-                aiSuggestionsContainer.innerHTML = '<p class="text-center text-red-400">an error occurred while fetching suggestions. please check the console and try again.</p>';
+                aiSuggestionsContainer.innerHTML = `<p class="text-center text-red-400">failed to get suggestions. check console.</p>`;
                 console.error('ai error:', error);
             }
         });
