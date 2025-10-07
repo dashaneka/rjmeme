@@ -3,37 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>meme generator</title>
+    <title>Meme Banana</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- updated google fonts -->
+    <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Cinzel&family=DM+Serif+Display&family=Della+Respira&family=Eagle+Lake&family=Italiana&family=Marcellus&family=Prata&family=Vollkorn&family=Yeseva+One&display=swap" rel="stylesheet">
     <style>
         body {
-            /* updated base font for ui */
             font-family: 'DM Serif Display', serif;
+            position: relative; /* required for pseudo-element positioning */
+            z-index: 1;
         }
+
+        /* banana pattern pseudo-element for background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* seamless, illustrative banana pattern encoded in base64 */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAdNSURBVHhe7Z1/aFxVEcd/d83MzjRpo8aYqKlYqa0YUhERUQRsbQp+EIpgwYoggeAPgkhYQRDsgiCCIAgiKNhFQXAQBAVprbjgS0GwtqhYUm1qkzTNNJvNTLLfnZk783l33s2b3Ju9d3ffOw98u9n5zJ058/3OmdmZM6uCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgkpGR5T5uXl+x8yKzJvMh8z/MhMy/zD/N3u8j5mRmW2ZTZm5kDmSWZJZkzmbWZU5l2+xc52lR5mhG5N73g+Yv/f7Y92/PjN7M+8z/3Y+ZF7zH/A9c4e5yjwEaWpY8j8zX/Afs+8wD/K6p+mOMnczFzPPMVczlzNXM5cyvzJzN/M9cz1zPfMLcxtzP3MXcy9zP3MJcy1zCXMLcytzB3Mncw9zZ7N0s3Wzd7P8s2+zYLPYsyCzBLMksxSzMrM0szazOrM2czuzO7M/sy+zYLAosCiwKLAosCiwKDAz/8L8S+Y/Zv5k1mSWZVZlPmXuZY5k5sXm/4n5v9mRmR+Y/8jcy0x8Q/MncwuzLzM/MvsyC3848yNzIzN/Mf+XmW3ZTZljmfeZXczsycwa4l1mXma+Yv5mDmTWZdYv/lTzLzM/M3syN/4qMyczf/PvMhsyv/EfM3MyM/8h8wNzA/M186mZ85iPmP+G/3s3My95/w9+jPn/mK2Z/S/3KPMB8zPzP/MvM2syq3Pfs5d5l3mb+Yw5kfmK2Zb5jfmM2Zv5mPmS+Yt5kfmC+ZP5gBmRmR+ZFZkpmUWZlZmjmS+ZT5jpmR+YmZnlmeVbM5syjzDPM7sy8yFzILMwsyIzK/M3cyezPPMZ8wczd5mB+ZrZlPmZ2Z6Zk5kLmV2ZuZ0ZmplDmcuZzZnlmR2ZJ5kPmQWZuZq5lNmSWZn5iZmWWZp5khmaOZD5ktmQ2ZI5lRmU+ZrZmDmSWZc5mRmWWZB5jTmU2ZKZlVkSmZP5kpmXWZbZlhmemZgZlFmQOZn5nNmSWZ5ZkzmW+Yo5mPmE2ZIZkvmY+YbZkFmaWYx5kvmb2ZjZkLmK2ZS5i5mUmZlZlJmV+YyZkfmW2ZJZkFmMWZh5ljmS+ZeZm/mUeZT5ldmQ2ZSZlFmWmZb5k/mMWZLZiDmY2Zr5ktmWWZKZkzmZ2ZKZlVmVWZE5kfmUuZXZkJmS2Z7ZnJmTWZJZkXmcOZXZlpmV2ZLZknmY2ZJZkZmS+ZSZm/meuZxZmNmQOZb5nrmVWYx5htma2ZjZmFmaWYK5kdmQ2ZbZkNme2Z7ZmzmWeZjZktmW2Z55nJmQWZAZhZmUmZX5ljmW2Zx5mBmWWZDZkbmF+ZLZkjmS2ZYZlZmeWZg5kjmW2ZxZkmV2Za5k7maWYy5jDmTuZvZlJmeOZD5m7mfWZjZnBmUWZT5mlmaWZLZllmaOZLZnJmeWZTZnHmY2ZLZmNmSuZjZmZmaWZAZlRmS+ZiZkvmWmZv5nFmY+ZfZlNmeWZjZkFmMWZi5j9mQWZhZkhmQ2ZZZkRmR+ZCZkbmXWZJZmJmVWZB5jFmY2ZBZnBma+ZRZmXmSWZ65n/mV2ZLZljmWeZjZkJmROZbZmrmR2ZxZnJmUWZK5m5mVWZCZlVmW2ZbZmJmWWZIZlFmaWZBZkvmWuZjZlJmR+ZCZlJmSWZT5lFmQ2ZxZnPmQWZg5mJmaOZZ5jJmQWZRZnNmQ2Zb5l1mSWZx5mJmVWZAZldmSuZj5ntmQWZLZjNmSWZhZmNmU+YrZnJmVWZRZlpmW+ZCZl5mfmZg5j5mRWZj5nNmeWZSZllmUWZi5m5maWZSZkdmQOZAZkXmYWZAZlXmU+ZfZkNmeOZD5jJmU+Zp5lFmaWZg5kpmQWZh5mtmeOZCZkRmUWZCZknmYWZSZkBmSWZB5hfmQWZg5kjmaWZAZldmaOZCZlRmW+ZCZk5mV+Z7ZkdmQWZT5mbmS2Zh5jDmeWZAZkZmUeZjZmrmWWZjZlFmaWZbZknmU+ZpZmtmaWZCZkDmQ+Z7ZkJmSWZiZmrmL2ZCZkvmW2ZxZkDmU2Zp5lpmUWZD5mtmUeZj5nNmcOZCZlVmUWZjZkNmW+Zi5i1mQWZAZkRmS2ZJZktmQWZjZmLmeWZjZkLmTWZIZkRmRmZnZnNmaWZAZkZmU+Zj5mNmaWZhZkFmUOZpZmNmQWZCZklma+Z7ZnJmVWZxZnNmUWZxZkDmU2ZDZmNmU2ZjZkNmcOZrZljmWmZp5ltmSuZjZkLmWWZZZmFmWmZBZkNmW2Zy5k1mUOZrZnJmU2ZDZljmeOZCZlJmWWZCZkNmQ2ZjZmNmaOZI5kjmeWZKZlpmU+ZCZkFmWmZxZmJmW+ZjZkJmUWZZ5mJmWWZCZlpmS2ZjZmJmeWZZZkNme+ZDZljmeOZxZkNmaWZhZmhmSWZjZkNmU2Zy5kVmaOZBZmFmU2ZDZkFmUWZBZnPmQ2ZCZlpmVmZBZlpmVWZBZnPmQOZAZmlmaWZxZnBmQWZAZljme+Z7ZnJmVWZBZnNmaWZAZlJmS2ZrZmLmTWZKZkNmeOZLZnPmQWZhZkJmVWZCZkFmUWZBZnNmaWZh5jNmSuZnZmJmVWZAZkNmeOZg5kpmSWZj5nNmeWZAZkFmW2ZjZmLmfWZxZkJmWWZZZkpmWWZKZkFmW2ZAZmlmaOZAZkFmaWZAZkFmW2ZB5nJmVWZAZlJmUWZCZlpmUuZRZkJmVWZCZmlmU2Zg5kjmU2Zj5mtme2Zy5lpmUgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoJ/8X/I36C/VnQW8AAAAASUVORK5CYII=');
+            background-size: 300px;
+            background-repeat: repeat;
+            opacity: 0.05; /* very subtle effect */
+            z-index: -1;
+        }
+
         /* custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #2d3748; }
-        ::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #718096; }
+        ::-webkit-scrollbar-thumb { background: #ca8a04; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
         
         /* range slider styling */
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none; appearance: none;
             width: 20px; height: 20px;
-            background: #db2777; cursor: pointer;
+            background: #f59e0b; cursor: pointer;
             border-radius: 50%; border: 2px solid white;
         }
         input[type="range"]::-moz-range-thumb {
             width: 20px; height: 20px;
-            background: #db2777; cursor: pointer;
+            background: #f59e0b; cursor: pointer;
             border-radius: 50%; border: 2px solid white;
         }
-
-        .modal { transition: opacity 0.25s ease; }
 
         /* --- IOS UPLOAD FIX STYLES --- */
         .file-input-label {
@@ -53,15 +69,15 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-pink-800 text-white antialiased">
+<body class="bg-gradient-to-br from-gray-900 via-yellow-900 to-amber-600 text-white antialiased">
     <div id="app-wrapper" class="transition-all duration-300 p-1">
         <div class="container mx-auto px-4 py-8">
             
             <header class="text-center mb-10">
-                <h1 class="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-400" style="font-family: 'Cinzel', serif;">
-                    meme maestro
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-400" style="font-family: 'Cinzel', serif;">
+                    meme banana
                 </h1>
-                <p class="text-gray-400 mt-2">craft the next viral meme with ease.</p>
+                <p class="text-gray-300 mt-2">craft the next viral meme with ease.</p>
             </header>
 
             <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -69,8 +85,8 @@
                 <div class="lg:col-span-1 bg-black/30 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl space-y-6 h-fit lg:sticky top-8">
                     
                     <div>
-                        <h2 class="text-xl font-semibold mb-3 text-pink-300">1. choose your image</h2>
-                        <label class="file-input-label w-full flex items-center justify-center gap-2 bg-pink-600 hover:bg-pink-700 transition-all duration-300 text-white font-semibold py-3 px-4 rounded-lg shadow-md">
+                        <h2 class="text-xl font-semibold mb-3 text-yellow-300">1. choose your image</h2>
+                        <label class="file-input-label w-full flex items-center justify-center gap-2 bg-yellow-600 hover:bg-yellow-700 transition-all duration-300 text-white font-semibold py-3 px-4 rounded-lg shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                             <span>upload image</span>
                             <input type="file" id="image-upload" accept="image/*">
@@ -81,22 +97,18 @@
 
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <h2 class="text-xl font-semibold text-pink-300">2. add your text</h2>
-                            <button id="ai-suggest-btn" disabled class="disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md transition-all">
-                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0v1.829Zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707L14 2.707a.5.5 0 0 0 0-.707ZM7.293 4L8 3.293a.5.5 0 1 0-.707-.707L6.586 2a.5.5 0 0 0 0 .707l.707.707ZM5 2.672a.5.5 0 1 0-1 0V.843a.5.5 0 0 0 1 0v1.829Z M1.5 13.293l.707.707a.5.5 0 0 0 .707 0L4 12.707a.5.5 0 0 0 0-.707L2.707 10.5a.5.5 0 0 0-.707 0l-.707.707a.5.5 0 0 0 0 .707Zm10.5 0a.5.5 0 0 0 0 .707l.707.707a.5.5 0 0 0 .707 0l.707-.707a.5.5 0 0 0 0-.707l-.707-.707a.5.5 0 0 0-.707 0L12 12.707a.5.5 0 0 0 0 .707ZM8.5 4.5a.5.5 0 0 0-1 0v1.536a.5.5 0 0 0 1 0V4.5ZM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Z"/></svg>
-                                suggest with ai
-                            </button>
+                            <h2 class="text-xl font-semibold text-yellow-300">2. add your text</h2>
                         </div>
                         <div class="space-y-4">
-                            <textarea id="top-text" placeholder="top text" rows="2" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition resize-none"></textarea>
-                            <textarea id="bottom-text" placeholder="bottom text" rows="2" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition resize-none"></textarea>
+                            <textarea id="top-text" placeholder="top text" rows="2" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition resize-none"></textarea>
+                            <textarea id="bottom-text" placeholder="bottom text" rows="2" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition resize-none"></textarea>
                         </div>
                     </div>
 
                     <hr class="border-gray-700">
 
                     <div>
-                        <h2 class="text-xl font-semibold mb-3 text-pink-300">3. style it up</h2>
+                        <h2 class="text-xl font-semibold mb-3 text-yellow-300">3. style it up</h2>
                         <div class="space-y-4">
                             <div>
                                 <label for="top-font-size" class="block text-sm font-medium text-gray-400 mb-1">top text size: <span id="top-font-size-value">50</span>px</label>
@@ -112,8 +124,7 @@
                             </div>
                             <div>
                                 <label for="font-family" class="block text-sm font-medium text-gray-400 mb-1">font</label>
-                                <!-- updated font list with prata as default -->
-                                <select id="font-family" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition">
+                                <select id="font-family" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition">
                                     <option value="Prata" selected>Prata</option>
                                     <option value="Italiana">Italiana</option>
                                     <option value="Vollkorn">Vollkorn</option>
@@ -141,7 +152,7 @@
 
                     <hr class="border-gray-700">
 
-                    <button id="download-btn" class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 transition-all duration-300 text-white font-semibold py-3 px-4 rounded-lg shadow-md disabled:bg-gray-500 disabled:cursor-not-allowed">
+                    <button id="download-btn" class="w-full flex items-center justify-center gap-2 bg-yellow-600 hover:bg-yellow-700 transition-all duration-300 text-white font-semibold py-3 px-4 rounded-lg shadow-md disabled:bg-gray-500 disabled:cursor-not-allowed">
                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                         <span>download meme</span>
                     </button>
@@ -161,24 +172,7 @@
         </div>
     </div>
 
-    <div id="ai-modal" class="modal fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
-        <div id="ai-modal-content" class="bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-6 transform scale-95 transition-transform duration-300">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-pink-300">ai caption suggestions</h3>
-                <button id="close-modal-btn" class="text-gray-400 hover:text-white">&times;</button>
-            </div>
-            <div id="ai-suggestions-container" class="space-y-2 max-h-64 overflow-y-auto">
-                <div id="ai-loader" class="text-center py-4">
-                    <svg class="animate-spin h-8 w-8 text-pink-400 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    <p class="mt-2 text-gray-400">analyzing image and crafting captions...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <script>
-        const appWrapper = document.getElementById('app-wrapper');
         const imageUpload = document.getElementById('image-upload');
         const topTextInput = document.getElementById('top-text');
         const bottomTextInput = document.getElementById('bottom-text');
@@ -192,12 +186,6 @@
         const fontColorInput = document.getElementById('font-color');
         const strokeColorInput = document.getElementById('stroke-color');
         const downloadBtn = document.getElementById('download-btn');
-        const aiSuggestBtn = document.getElementById('ai-suggest-btn');
-        const aiModal = document.getElementById('ai-modal');
-        const aiModalContent = document.getElementById('ai-modal-content');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const aiSuggestionsContainer = document.getElementById('ai-suggestions-container');
-        const aiLoader = document.getElementById('ai-loader');
         const canvas = document.getElementById('meme-canvas');
         const placeholder = document.getElementById('placeholder');
         const ctx = canvas.getContext('2d');
@@ -305,7 +293,6 @@
                         placeholder.classList.add('hidden');
                         canvas.classList.remove('hidden');
                         downloadBtn.disabled = false;
-                        aiSuggestBtn.disabled = false;
                         topTextState.relX = 0.5; topTextState.relY = 0.05;
                         bottomTextState.relX = 0.5; bottomTextState.relY = 0.95;
                         loadFontAndRedraw();
@@ -335,9 +322,16 @@
             tempCanvas.height = image.height;
             document.fonts.load(`1em "${fontFamilySelect.value}"`).then(() => {
                 drawMemeOnCanvas(tempCtx, image.width, image.height, image);
-                const randomChars = Math.random().toString(36).substring(2, 5);
+                
+                // updated filename logic
+                let randomChars = '';
+                const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+                for (let i = 0; i < 3; i++) {
+                    randomChars += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                }
+
                 const link = document.createElement('a');
-                link.download = `meme-maestro-${randomChars}.png`;
+                link.download = `rjbmeme${randomChars}.png`;
                 link.href = tempCanvas.toDataURL('image/png');
                 link.click();
             });
@@ -441,92 +435,6 @@
         window.addEventListener('touchmove', handleDragMove, { passive: false });
         window.addEventListener('mouseup', handleDragEnd); 
         window.addEventListener('touchend', handleDragEnd);
-
-        const openModal = () => { aiModal.classList.remove('opacity-0', 'pointer-events-none'); aiModalContent.classList.remove('scale-95'); };
-        const closeModal = () => { aiModal.classList.add('opacity-0', 'pointer-events-none'); aiModalContent.classList.add('scale-95'); };
-        
-        aiSuggestBtn.addEventListener('click', async () => {
-            if (!image) return;
-            openModal();
-            aiSuggestionsContainer.innerHTML = '';
-            aiSuggestionsContainer.appendChild(aiLoader);
-            aiLoader.style.display = 'block';
-
-            const tempCanvas = document.createElement('canvas');
-            const scale = Math.min(1, 512 / Math.max(image.width, image.height));
-            tempCanvas.width = image.width * scale;
-            tempCanvas.height = image.height * scale;
-            tempCanvas.getContext('2d').drawImage(image, 0, 0, tempCanvas.width, tempCanvas.height);
-            const base64ImageData = tempCanvas.toDataURL('image/jpeg', 0.8).split(',')[1];
-            
-            const apiKey = "YOUR_API_KEY"; 
-            
-            if (!apiKey || apiKey === "YOUR_API_KEY") {
-                 aiLoader.style.display = 'none';
-                 aiSuggestionsContainer.innerHTML = '<p class="text-center text-yellow-400">please add your api key in the code to use ai features.</p>';
-                 return;
-            }
-
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-            const payload = {
-                contents: [{
-                    parts: [
-                        { text: "act as a meme expert. provide 5 short, witty, and funny meme captions for this image. use the format 'top text: [your top caption]\nbottom text: [your bottom caption]'. if a caption only needs one line, use 'top text: [your caption]' and 'bottom text: ' or vice-versa. keep them concise." },
-                        { inlineData: { mimeType: "image/jpeg", data: base64ImageData } }
-                    ]
-                }]
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'content-type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) { throw new Error(`api error: ${response.status}`); }
-                const result = await response.json();
-                aiLoader.style.display = 'none';
-                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (!text) {
-                     aiSuggestionsContainer.innerHTML = '<p class="text-center text-gray-400">no captions generated. try another image.</p>';
-                     return;
-                }
-                const suggestions = text.split(/(\n\n|\r\n\r\n)/).filter(s => s.trim().toLowerCase().includes('text:'));
-                if (suggestions.length === 0) {
-                    aiSuggestionsContainer.innerHTML = '<p class="text-center text-gray-400">couldn\'t parse suggestions. try again.</p>';
-                    return;
-                }
-                suggestions.forEach(suggestion => {
-                    const button = document.createElement('button');
-                    button.className = 'w-full p-3 bg-gray-700 hover:bg-pink-600 rounded-lg text-left transition-colors text-sm border border-gray-600 mb-2';
-                    const topMatch = suggestion.match(/top text:\s*(.*)/i);
-                    const bottomMatch = suggestion.match(/bottom text:\s*(.*)/i);
-                    const topVal = topMatch ? topMatch[1].trim() : '';
-                    const bottomVal = bottomMatch ? bottomMatch[1].trim() : '';
-                    let previewHtml = '';
-                    if (topVal) previewHtml += `<div class="font-bold text-white">${topVal}</div>`;
-                    if (bottomVal) previewHtml += `<div class="text-gray-300">${bottomVal}</div>`;
-                    button.innerHTML = previewHtml || '<div class="text-gray-400 italic">empty caption</div>';
-                    button.onclick = () => {
-                        topTextInput.value = topVal;
-                        bottomTextInput.value = bottomVal;
-                        topTextState.text = topVal;
-                        bottomTextState.text = bottomVal;
-                        closeModal();
-                        redrawMeme();
-                    };
-                    aiSuggestionsContainer.appendChild(button);
-                });
-            } catch (error) {
-                aiLoader.style.display = 'none';
-                aiSuggestionsContainer.innerHTML = `<p class="text-center text-red-400">failed to get suggestions. check console.</p>`;
-                console.error('ai error:', error);
-            }
-        });
-        
-        closeModalBtn.addEventListener('click', closeModal);
-        aiModal.addEventListener('click', (e) => { if (e.target === aiModal) closeModal(); });
 
     </script>
 </body>
