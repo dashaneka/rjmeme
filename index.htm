@@ -12,7 +12,7 @@
     <style>
         body {
             font-family: 'DM Serif Display', serif;
-            position: relative; /* required for pseudo-element positioning */
+            position: relative; 
             z-index: 1;
         }
 
@@ -24,11 +24,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            /* seamless, illustrative banana pattern encoded in base64 */
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAdNSURBVHhe7Z1/aFxVEcd/d83MzjRpo8aYqKlYqa0YUhERUQRsbQp+EIpgwYoggeAPgkhYQRDsgiCCIAgiKNhFQXAQBAVprbjgS0GwtqhYUm1qkzTNNJvNTLLfnZk783l33s2b3Ju9d3ffOw98u9n5zJ058/3OmdmZM6uCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgkpGR5T5uXl+x8yKzJvMh8z/MhMy/zD/N3u8j5mRmW2ZTZm5kDmSWZJZkzmbWZU5l2+xc52lR5mhG5N73g+Yv/f7Y92/PjN7M+8z/3Y+ZF7zH/A9c4e5yjwEaWpY8j8zX/Afs+8wD/K6p+mOMnczFzPPMVczlzNXM5cyvzJzN/M9cz1zPfMLcxtzP3MXcy9zP3MJcy1zCXMLcytzB3Mncw9zZ7N0s3Wzd7P8s2+zYLPYsyCzBLMksxSzMrM0szazOrM2czuzO7M/sy+zYLAosCiwKLAosCiwKDAz/8L8S+Y/Zv5k1mSWZVZlPmXuZY5k5sXm/4n5v9mRmR+Y/8jcy0x8Q/MncwuzLzM/MvsyC3848yNzIzN/Mf+XmW3ZTZljmfeZXczsycwa4l1mXma+Yv5mDmTWZdYv/lTzLzM/M3syN/4qMyczf/PvMhsyv/EfM3MyM/8h8wNzA/M186mZ85iPmP+G/3s3My95/w9+jPn/mK2Z/S/3KPMB8zPzP/MvM2syq3Pfs5d5l3mb+Yw5kfmK2Zb5jfmM2Zv5mPmS+Yt5kfmC+ZP5gBmRmR+ZFZkpmUWZlZmjmS+ZT5jpmR+YmZnlmeVbM5syjzDPM7sy8yFzILMwsyIzK/M3cyezPPMZ8wczd5mB+ZrZlPmZ2Z6Zk5kLmV2ZuZ0ZmplDmcuZzZnlmR2ZJ5kPmQWZuZq5lNmSWZn5iZmWWZp5khmaOZD5ktmQ2ZI5lRmU+ZrZmDmSWZc5mRmWWZB5jTmU2ZKZlVkSmZP5kpmXWZbZlhmemZgZlFmQOZn5nNmSWZ5ZkzmW+Yo5mPmE2ZIZkvmY+YbZkFmaWYx5kvmb2ZjZkLmK2ZS5i5mUmZlZlJmV+YyZkfmW2ZJZkFmMWZh5ljmS+ZeZm/mUeZT5ldmQ2ZSZlFmWmZb5k/mMWZLZiDmY2Zr5ktmWWZKZkzmZ2ZKZlVmVWZE5kfmUuZXZkJmS2Z7ZnJmTWZJZkXmcOZXZlpmV2ZLZknmY2ZJZkZmS+ZSZm/meuZxZmNmQOZb5nrmVWYx5htma2ZjZmFmaWYK5kdmQ2ZbZkNme2Z7ZmzmWeZjZktmW2Z55nJmQWZAZhZmUmZX5ljmW2Zx5mBmWWZDZkbmF+ZLZkjmS2ZYZlZmeWZg5kjmW2ZxZkmV2Za5k7maWYy5jDmTuZvZlJmeOZD5m7mfWZjZnBmUWZT5mlmaWZLZllmaOZLZnJmeWZTZnHmY2ZLZmNmSuZjZmZmaWZAZlRmS+ZiZkvmWmZv5nFmY+ZfZlNmeWZjZkFmMWZi5j9mQWZhZkhmQ2ZZZkRmR+ZCZkbmXWZJZmJmVWZB5jFmY2ZBZnBma+ZRZmXmSWZ65n/mV2ZLZljmWeZjZkJmROZbZmrmR2ZxZnJmUWZK5m5mVWZCZlVmW2ZbZmJmWWZIZlFmaWZBZkvmWuZjZlJmR+ZCZlJmSWZT5lFmQ2ZxZnPmQWZg5mJmaOZZ5jJmQWZRZnNmQ2Zb5l1mSWZx5mJmVWZAZldmSuZj5ntmQWZLZjNmSWZhZmNmU+YrZnJmVWZRZlpmW+ZCZl5mfmZg5j5mRWZj5nNmeWZSZllmUWZi5m5maWZSZkdmQOZAZkXmYWZAZlXmU+ZfZkNmeOZD5jJmU+Zp5lFmaWZg5kpmQWZh5mtmeOZCZkRmUWZCZknmYWZSZkBmSWZB5hfmQWZg5kjmaWZAZldmaOZCZlRmW+ZCZk5mV+Z7ZkdmQWZT5mbmS2Zh5jDmeWZAZkZmUeZjZmrmWWZjZlFmaWZbZknmU+ZpZmtmaWZCZkDmQ+Z7ZkJmSWZiZmrmL2ZCZkvmW2ZxZkDmU2Zp5lpmUWZD5mtmUeZj5nNmcOZCZlVmUWZjZkNmW+Zi5i1mQWZAZkRmS2ZJZktmQWZjZmLmeWZjZkLmTWZIZkRmRmZnZnNmaWZAZkZmU+Zj5mNmaWZhZkFmUOZpZmNmQWZCZklma+Z7ZnJmVWZxZnNmUWZxZkDmU2ZDZmNmU2ZjZkNmcOZrZljmWmZp5ltmSuZjZkLmWWZZZmFmWmZBZkNmW2Zy5k1mUOZrZnJmU2ZDZljmeOZCZlJmWWZCZkNmQ2ZjZmNmaOZI5kjmeWZKZlpmU+ZCZkFmWmZxZmJmW+ZjZkJmUWZZ5mJmWWZCZlpmS2ZjZmJmeWZZZkNme+ZDZljmeOZxZkNmaWZhZmhmSWZjZkNmU2Zy5kVmaOZBZmFmU2ZDZkFmUWZBZnPmQ2ZCZlpmVmZBZlpmVWZBZnPmQOZAZmlmaWZxZnBmQWZAZljme+Z7ZnJmVWZBZnNmaWZAZlJmS2ZrZmLmTWZKZkNmeOZLZnPmQWZhZkJmVWZCZkFmUWZBZnNmaWZh5jNmSuZnZmJmVWZAZkNmeOZg5kpmSWZj5nNmeWZAZkFmW2ZjZmLmfWZxZkJmWWZZZkpmWWZKZkFmW2ZAZmlmaOZAZkFmaWZAZkFmW2ZB5nJmVWZAZlJmUWZCZlpmUuZRZkJmVWZCZmlmU2Zg5kjmU2Zj5mtme2Zy5lpmUgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoJ/8X/I36C/VnQW8AAAAASUVORK5CYII=');
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAdNSURBVHhe7Z1/aFxVEcd/d83MzjRpo8aYqKlYqa0YUhERUQRsbQp+EIpgwYoggeAPgkhYQRDsgiCCIAgiKNhFQXAQBAVprbjgS0GwtqhYUm1qkzTNNJvNTLLfnZk783l33s2b3Ju9d3ffOw98u9n5zJ058/3OmdmZM6uCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgkpGR5T5uXl+x8yKzJvMh8z/MhMy/zD/N3u8j5mRmW2ZTZm5kDmSWZJZkzmbWZU5l2+xc52lR5mhG5N73g+Yv/f7Y92/PjN7M+8z/3Y+ZF7zH/A9c4e5yjwEaWpY8j8zX/Afs+8wD/K6p+mOMnczFzPPMVczlzNXM5cyvzJzN/M9cz1zPfMLcxtzP3MXcy9zP3MJcy1zCXMLcytzB3Mncw9zZ7N0s3Wzd7P8s2+zYLPYsyCzBLMksxSzMrM0szazOrM2czuzO7M/sy+zYLAosCiwKLAosCiwKDAz/8L8S+Y/Zv5k1mSWZVZlPmXuZY5k5sXm/4n5v9mRmR+Y/8jcy0x8Q/MncwuzLzM/MvsyC3848yNzIzN/Mf+XmW2ZTZljmfeZXczsycwa4l1mXma+Yv5mDmTWZdYv/lTzLzM/M3syN/4qMyczf/PvMhsyv/EfM3MyM/8h8wNzA/M186mZ85iPmP+G/3s3My95/w9+jPn/mK2Z/S/3KPMB8zPzP/MvM2syq3Pfs5d5l3mb+Yw5kfmK2Zb5jfmM2Zv5mPmS+Yt5kfmC+ZP5gBmRmR+ZFZkpmUWZlZmjmS+ZT5jpmR+YmZnlmeVbM5syjzDPM7sy8yFzILMwsyIzK/M3cyezPPMZ8wczd5mB+ZrZlPmZ2Z6Zk5kLmV2ZuZ0ZmplDmcuZzZnlmR2ZJ5kPmQWZuZq5lNmSWZn5iZmWWZp5khmaOZD5ktmQ2ZI5lRmU+ZrZmDmSWZc5mRmWWZB5jTmU2ZKZlVkSmZP5kpmXWZbZlhmemZgZlFmQOZn5nNmSWZ5ZkzmW+Yo5mPmE2ZIZkvmY+YbZkFmaWYx5kvmb2ZjZkLmK2ZS5i5mUmZlZlJmV+YyZkfmW2ZJZkFmMWZh5ljmS+ZeZm/mUeZT5ldmQ2ZSZlJmWmZb5k/mMWZLZiDmY2Zr5ktmWWZKZkzmZ2ZKZlVmVWZE5kfmUuZXZkJmS2Z7ZnJmTWZJZkXmcOZXZlpmV2ZLZknmY2ZJZkZmS+ZSZm/meuZxZmNmQOZb5nrmVWYx5htma2ZjZmFmaWYK5kdmQ2ZbZkNme2Z7ZmzmWeZjZktmW2Z55nJmQWZAZhZmUmZX5ljmW2Zx5mBmWWZDZkbmF+ZLZkjmS2ZYZlZmeWZg5kjmW2ZxZkmV2Za5k7maWYy5jDmTuZvZlJmeOZD5m7mfWZjZnBmUWZT5mlmaWZLZllmaOZLZnJmeWZTZnHmY2ZLZmNmSuZjZmZmaWZAZlRmS+ZiZkvmWmZv5nFmY+ZfZlNmeWZjZkFmMWZi5j9mQWZhZkhmQ2ZZZkRmR+ZCZkbmXWZJZmJmVWZB5jFmY2ZBZnBma+ZRZmXmSWZ65n/mV2ZLZljmWeZjZkJmROZbZmrmR2ZxZnJmUWZK5m5mVWZCZlVmW2ZbZmJmWWZIZlFmaWZBZkvmWuZjZlJmR+ZCZlJmSWZT5lFmQ2ZxZnPmQWZg5mJmaOZZ5jJmQWZRZnNmQ2Zb5l1mSWZx5mJmVWZAZldmSuZj5ntmQWZLZjNmSWZhZmNmU+YrZnJmVWZRZlpmW+ZCZl5mfmZg5j5mRWZj5nNmeWZSZllmUWZi5m5maWZSZkdmQOZAZkXmYWZAZlXmU+ZfZkNmeOZD5jJmU+Zp5lFmaWZj5kpmQWZh5mtmeOZCZkRmUWZCZknmYWZSZkBmSWZB5hfmQWZg5kjmaWZAZldmaOZCZlRmW+ZCZk5mV+Z7ZkdmQWZT5mbmS2Zh5jDmeWZAZkZmUeZjZmrmWWZjZlFmaWZbZknmU+ZpZmtmaWZCZkDmQ+Z7ZkJmSWZiZmrmL2ZCZkvmW2ZxZkDmU2Zp5lpmUWZD5mtmUeZj5nNmcOZCZlVmUWZjZkNmW+Zi5i1mQWZAZkRmS2ZJZktmQWZjZmLmeWZjZkLmTWZIZkRmRmZnZnNmaWZAZkZmU+Zj5mNmaWZhZkFmUOZpZmNmQWZCZklma+Z7ZnJmVWZxZnNmUWZxZkDmU2ZDZmNmU2ZjZkNmcOZrZljmWmZp5ltmSuZjZkLmWWZZZmFmWmZBZkNmW2Zy5k1mUOZrZnJmU2ZDZljmeOZCZlJmWWZCZkNmQ2ZjZmNmaOZI5kjmeWZKZlpmU+ZCZkFmWmZxZmJmW+ZjZkJmUWZZ5mJmWWZCZlpmS2ZjZmJmeWZZZkNme+ZDZljmeOZxZkNmaWZhZmhmSWZjZkNmU2Zy5kVmaOZBZmFmU2ZDZkFmUWZBZnPmQ2ZCZlpmVmZBZlpmVWZBZnPmQOZAZmlmaWZxZnBmQWZAZljme+Z7ZnJmVWZBZnNmaWZAZlJmS2ZrZmLmTWZKZkNmeOZLZnPmQWZhZkJmVWZCZkFmUWZBZnNmaWZh5jNmSuZnZmJmVWZAZkNmeOZg5kpmSWZj5nNmeWZAZkFmW2ZjZmLmfWZxZkJmWWZZZkpmWWZKZkFmW2ZB5nJmVWZAZlJmUWZCZlpmUuZRZkJmVWZCZmlmU2Zg5kjmU2Zj5mtme2Zy5lpmUgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoJ/8X/I36C/VnQW8AAAAASUVORK5CYII=');
             background-size: 300px;
             background-repeat: repeat;
-            opacity: 0.05; /* very subtle effect */
+            opacity: 0.05; 
             z-index: -1;
         }
 
@@ -314,16 +313,37 @@
         strokeColorInput.addEventListener('input', redrawMeme);
         window.addEventListener('resize', redrawMeme);
 
+        // --- FIXED DOWNLOAD FUNCTION ---
         downloadBtn.addEventListener('click', () => {
             if (!image) return;
+            
             const tempCanvas = document.createElement('canvas');
             const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = image.width;
-            tempCanvas.height = image.height;
+            
+            // --- Resolution Capping Logic ---
+            const MAX_DIMENSION = 1200;
+            let drawWidth = image.width;
+            let drawHeight = image.height;
+
+            if (drawWidth > MAX_DIMENSION || drawHeight > MAX_DIMENSION) {
+                if (drawWidth > drawHeight) {
+                    const scale = MAX_DIMENSION / drawWidth;
+                    drawWidth = MAX_DIMENSION;
+                    drawHeight = drawHeight * scale;
+                } else {
+                    const scale = MAX_DIMENSION / drawHeight;
+                    drawHeight = MAX_DIMENSION;
+                    drawWidth = drawWidth * scale;
+                }
+            }
+            
+            tempCanvas.width = drawWidth;
+            tempCanvas.height = drawHeight;
+
             document.fonts.load(`1em "${fontFamilySelect.value}"`).then(() => {
-                drawMemeOnCanvas(tempCtx, image.width, image.height, image);
+                // Draw the meme on the scaled canvas
+                drawMemeOnCanvas(tempCtx, drawWidth, drawHeight, image);
                 
-                // updated filename logic
                 let randomChars = '';
                 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
                 for (let i = 0; i < 3; i++) {
@@ -333,6 +353,11 @@
                 const link = document.createElement('a');
                 link.download = `rjbmeme${randomChars}.png`;
                 link.href = tempCanvas.toDataURL('image/png');
+                
+                // This makes the link open in a new tab, which is the best practice for iOS
+                // where users can long-press to save the image.
+                link.target = '_blank';
+                
                 link.click();
             });
         });
